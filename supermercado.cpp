@@ -4,7 +4,7 @@ void Supermercado::mostrar_menu(){
     int opc;
     do{
         CLEAN;
-        cout << "*** Bienvenido a " << this->nombre << " ";
+        cout << "*** Bienvenido a " << nombre << " ";
         fecha_actual.mostrar_fecha(); cout << " ***" << endl;
         cout << "\t[01] Registrar productos" << endl;
         cout << "\t[02] Consultar datos de un producto" << endl;
@@ -34,7 +34,7 @@ void Supermercado::registrar_productos(){
             cout << "Cantidad incorrecta" << endl;
             getchar();
         }
-        else if(cantidad > this->gestor_stock->capacidad_disponible()){
+        else if(cantidad > gestor_stock.capacidad_disponible()){
             cout << "No hay suficiente espacio" << endl;
             getchar();
         }
@@ -42,7 +42,7 @@ void Supermercado::registrar_productos(){
             ok = true;
     }while(!ok);
     if(cantidad != 0)
-        gestor_stock->registrar_productos(cantidad);
+        gestor_stock.registrar_productos(cantidad);
 }
 
 void Supermercado::registrar_clientes(){
@@ -55,7 +55,7 @@ void Supermercado::registrar_clientes(){
             cout << "Cantidad incorrecta" << endl;
             getchar();
         }
-        else if(cantidad > this->gestor_clientes->capacidad_disponible()){
+        else if(cantidad > gestor_clientes.capacidad_disponible()){
             cout << "No hay suficiente espacio" << endl;
             getchar();
         }
@@ -63,7 +63,7 @@ void Supermercado::registrar_clientes(){
             ok = true;
     }while(!ok);
     if(cantidad != 0)
-        gestor_clientes->registrar_clientes(cantidad);
+        gestor_clientes.registrar_clientes(cantidad);
 }
 
 void Supermercado::ejecutar_operacion(int& opc){
@@ -74,12 +74,12 @@ void Supermercado::ejecutar_operacion(int& opc){
             break;
         }
         case 2:{
-            gestor_stock->consultar_datos();
+            gestor_stock.consultar_datos();
             getchar();
             break;
         }
         case 3:{
-            gestor_stock->listar_productos();
+            gestor_stock.listar_productos();
             getchar();
             break;
         }
@@ -88,12 +88,12 @@ void Supermercado::ejecutar_operacion(int& opc){
             break;
         }
         case 5:{
-            gestor_clientes->consultar_datos();
+            gestor_clientes.consultar_datos();
             getchar();
             break;
         }
         case 6:{
-            gestor_clientes->listar_clientes();
+            gestor_clientes.listar_clientes();
             getchar();
             break;
         }

@@ -11,11 +11,11 @@ public:
         this->anio = anio;
     }
     void mostrar_fecha(){
-        cout.fill('0'); cout.width( 2 );
+        cout.fill('0'); cout.width(2); // rellenar ceros a la izquierda
         cout << dia << "/";
-        cout.fill('0'); cout.width( 2 ); 
+        cout.fill('0'); cout.width(2); 
         cout << mes << "/";
-        cout.fill('0'); cout.width( 2 ); 
+        cout.fill('0'); cout.width(2); 
         cout << anio;
         // cout << dia << "/" << mes << "/" << anio;
     }

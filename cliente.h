@@ -6,9 +6,9 @@ private:
 public:
     Cliente(){}
     void mostrar_datos(){
-        cout << "DNI       >> " << this->dni << endl;
-        cout << "Nombres   >> " << this->nombres << endl;
-        cout << "Apellidos >> " << this->apellidos << endl;
+        cout << "DNI       >> " << dni << endl;
+        cout << "Nombres   >> " << nombres << endl;
+        cout << "Apellidos >> " << apellidos << endl;
     }
     friend class DeClientes;
 };
