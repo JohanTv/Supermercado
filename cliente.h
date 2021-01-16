@@ -5,5 +5,10 @@ private:
     char apellidos[40];
 public:
     Cliente(){}
-    void mostrar_datos(){}
+    void mostrar_datos(){
+        cout << "DNI       >> " << this->dni << endl;
+        cout << "Nombres   >> " << this->nombres << endl;
+        cout << "Apellidos >> " << this->apellidos << endl;
+    }
+    friend class DeClientes;
 };

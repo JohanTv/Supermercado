@@ -8,6 +8,9 @@ protected:
 public:
     Producto(){}
     void mostrar_datos(){
+        cout << "Codigo  >> " << codigo << endl;
+        cout << "Nombre  >> " << nombre << endl;
+        cout << "Precio  >> s/." << precio << endl;
     }
 };
 
@@ -16,6 +19,11 @@ private:
     int cantidad;
 public:
     EnStock(){}
+    void mostrar_datos_especificos(){
+        mostrar_datos();
+        cout << "Cantidad >> " << cantidad << endl;
+    }
+    friend class DeStock;
 };
 
 class EnVenta : public Producto{
@@ -25,4 +33,5 @@ private:
     Fecha fecha_venta;
 public:
     EnVenta(){}
+    friend class DeVentas;
 };
