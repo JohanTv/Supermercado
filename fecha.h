@@ -19,5 +19,24 @@ public:
         cout << anio;
         // cout << dia << "/" << mes << "/" << anio;
     }
+    bool operator==(Fecha& other){
+        return other.dia == dia && other.mes == mes && other.anio == anio;
+    }
+    void operator=(Fecha& other){
+        dia = other.dia;
+        mes = other.mes;
+        anio = other.anio;
+    }
+    void aumentar_fecha(){
+        ++dia;
+        if(dia > 30){
+            dia = 1;
+            ++mes;
+        }
+        if(mes > 12){
+            mes = 1;
+            ++anio;
+        }
+    }
     friend class Supermercado;
 };

@@ -10,5 +10,6 @@ public:
         cout << "Nombres   >> " << nombres << endl;
         cout << "Apellidos >> " << apellidos << endl;
     }
+    int get_dni(){ return dni; }
     friend class DeClientes;
 };

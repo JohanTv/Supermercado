@@ -69,6 +69,32 @@ int DeClientes::capacidad_disponible(){
     return MAX_CLIENTES - cantidad_actual;
 }
 
+void DeClientes::cargar_clientes(){
+    ifstream archivo(ruta_archivo, ios::binary);
+    if(!archivo.fail()){
+        Cliente p;
+        archivo.read( (char *) &p, sizeof(Cliente) );
+        while(!archivo.eof()){
+            clientes[cantidad_actual] = p;
+            ++cantidad_actual;
+            archivo.read( (char *) &p, sizeof(Cliente) );
+        }
+        cantidad_anterior = cantidad_actual;
+    }else
+        cantidad_anterior = 0;
+    archivo.close();
+}
+
+void DeClientes::guardar_clientes(){
+    if(cantidad_actual != cantidad_anterior){
+        ofstream archivo(ruta_archivo, ios::binary | ios::app);
+        for(int i=cantidad_anterior; i < cantidad_actual; ++i){
+            archivo.write( (char *) &clientes[i], sizeof(Cliente));
+        }
+        archivo.close();
+    }
+}
+
 // *************************************************************************************************** //
 
 int DeStock::buscar_codigo(int codigo){
@@ -138,4 +164,168 @@ void DeStock::consultar_datos(){
 
 int DeStock::capacidad_disponible(){
     return MAX_STOCK - cantidad_actual;
+}
+
+void DeStock::cargar_productos(){
+    ifstream archivo(ruta_archivo, ios::binary);
+    if(!archivo.fail()){
+        EnStock p;
+        archivo.read( (char *) &p, sizeof(EnStock) );
+        while(!archivo.eof()){
+            productos[cantidad_actual] = p;
+            ++cantidad_actual;
+            archivo.read( (char *) &p, sizeof(EnStock) );
+        }
+        cantidad_anterior = cantidad_actual;
+    }else
+        cantidad_anterior = 0;
+    archivo.close();
+}
+
+void DeStock::guardar_productos(){
+    if(cantidad_actual != cantidad_anterior){
+        ofstream archivo(ruta_archivo, ios::binary | ios::app);
+        for(int i=cantidad_anterior; i < cantidad_actual; ++i){
+            archivo.write( (char *) &productos[i], sizeof(EnStock));
+        }
+        archivo.close();
+    }
+}
+
+// *************************************************************************************************** //
+void DeVentas::registrar_venta(int dni, int cantidad, Fecha fecha_actual, EnStock p){
+    productos[cantidad_actual].cliente_dni = dni;
+    productos[cantidad_actual].cantidad_vendida = cantidad;
+    productos[cantidad_actual].fecha_venta = fecha_actual;
+    productos[cantidad_actual].codigo = p.get_codigo();
+    strcpy(productos[cantidad_actual].nombre, p.get_nombre());
+    productos[cantidad_actual].precio = p.get_precio();
+    ++cantidad_actual;
+}
+
+void DeVentas::calcular_ventas(Fecha fecha){
+    Contador vendidos[MAX_VENTAS];
+    int cantidad = 0;
+    for(int i=0; i<cantidad_actual; ++i){
+        if(productos[i].fecha_venta == fecha){
+            aumentar_contador(vendidos, cantidad, productos[i]);
+        }
+    }
+    cout << "\t\t*** Ventas "; fecha.mostrar_fecha(); cout << "***" << endl;
+    if(cantidad == 0){
+        cout << "No se registraron ventas en este dia" << endl;
+        getchar();
+        return;
+    }
+    int cantidad_total = 0;
+    int monto_total = 0;
+    for(int i=0; i<cantidad; ++i){
+        cantidad_total += vendidos[i].cantidad;
+        monto_total += vendidos[i].monto_acumulado;
+    }
+    cout << "\tTotal de productos vendidos >> " << cantidad_total << endl;
+    cout << "\tMonto total generado        >> s/." << monto_total << endl;
+    getchar();
+}
+
+void DeVentas::estadistica_productos(Fecha fecha){
+    Contador vendidos[MAX_VENTAS];
+    int cantidad = 0;
+    for(int i=0; i<cantidad_actual; ++i){
+        if(productos[i].fecha_venta == fecha){
+            aumentar_contador(vendidos, cantidad, productos[i]);
+        }
+    }
+    cout << "\t\t*** Ventas "; fecha.mostrar_fecha(); cout << "***" << endl;
+    if(cantidad == 0){
+        cout << "No se registraron ventas en este dia" << endl;
+        getchar();
+        return;
+    }
+    for(int i=0; i<cantidad; ++i){
+        cout << "\n*** Producto N°" << i+1 << " ***" << endl;
+        vendidos[i].mostrar_datos();
+    }
+    getchar();
+}
+
+void DeVentas::aumentar_contador(Contador vendidos[], int& limite, EnVenta p){
+    bool ok = false;
+    for(int i=0; i<limite; ++i){
+        if(vendidos[i].codigo == p.codigo){
+            vendidos[i].aumentar_cantidad(p.cantidad_vendida);
+            vendidos[i].aumentar_monto(p.cantidad_vendida*p.precio);
+            ok = true;
+        }
+    }
+    if(!ok){
+        vendidos[limite].codigo = p.codigo;
+        vendidos[limite].cantidad = p.cantidad_vendida;
+        vendidos[limite].monto_acumulado = p.cantidad_vendida*p.precio;
+        strcpy(vendidos[limite].nombre, p.nombre);
+        ++limite;
+    }
+}
+
+void DeVentas::top_productos(Fecha fecha){
+    Contador vendidos[MAX_VENTAS];
+    int cantidad = 0;
+    for(int i=0; i<cantidad_actual; ++i){
+        if(productos[i].fecha_venta == fecha){
+            aumentar_contador(vendidos, cantidad, productos[i]);
+        }
+    }
+    cout << "\t\t*** Productos del "; fecha.mostrar_fecha(); cout << "***" << endl;
+    if(cantidad == 0){
+        cout << "No se registraron ventas en este dia" << endl;
+        getchar();
+        return;
+    }
+    for(int i = cantidad; i > 0; i--){
+        for(int j = 0; j < i-1; j++){
+            if(vendidos[j].cantidad < vendidos[j+1].cantidad){
+                Contador aux = vendidos[j];
+                vendidos[j] = vendidos[j+1];
+                vendidos[j+1] = aux;
+            }
+        }
+    }
+    int lim;
+    if(cantidad < 3) lim = cantidad;
+    else lim = 3;
+    for(int i=0; i<lim; ++i){
+        cout << "\n*** Producto N°" << i+1 << " ***" << endl;
+        vendidos[i].mostrar_datos();
+    }
+    getchar();
+}
+
+int DeVentas::capacidad_disponible(){
+    return MAX_VENTAS - cantidad_actual;
+}
+
+void DeVentas::cargar_ventas(){
+    ifstream archivo(ruta_archivo, ios::binary);
+    if(!archivo.fail()){
+        EnVenta p;
+        archivo.read( (char *) &p, sizeof(EnVenta) );
+        while(!archivo.eof()){
+            productos[cantidad_actual] = p;
+            ++cantidad_actual;
+            archivo.read( (char *) &p, sizeof(EnVenta) );
+        }
+        cantidad_anterior = cantidad_actual;
+    }else
+        cantidad_anterior = 0;
+    archivo.close();
+}
+
+void DeVentas::guardar_ventas(){
+    if(cantidad_actual != cantidad_anterior){
+        ofstream archivo(ruta_archivo, ios::binary | ios::app); //Escribir al final del archivo.
+        for(int i=cantidad_anterior; i < cantidad_actual; ++i){
+            archivo.write( (char *) &productos[i], sizeof(EnVenta));
+        }
+        archivo.close();
+    }
 }

@@ -12,6 +12,10 @@ public:
         cout << "Nombre  >> " << nombre << endl;
         cout << "Precio  >> s/." << precio << endl;
     }
+    int get_codigo(){ return codigo; }
+    char* get_nombre(){ return nombre; }
+    int get_precio(){ return precio; }
+    friend class DeStock;
 };
 
 class EnStock : public Producto{
@@ -23,6 +27,8 @@ public:
         mostrar_datos();
         cout << "Cantidad >> " << cantidad << endl;
     }
+    int get_cantidad(){ return cantidad; }
+    void disminuir_cantidad(int monto){ cantidad -= monto; }
     friend class DeStock;
 };
 
