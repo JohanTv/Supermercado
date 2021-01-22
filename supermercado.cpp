@@ -18,7 +18,7 @@ void Supermercado::mostrar_menu(){
         cout << "\t[10] Estadistica de productos por fecha" << endl;
         cout << "\t[11] Siguiente dia" << endl;
         cout << "\t[00] Salir" << endl;
-        cout << "\tOpcion --> "; cin >> opc;
+        cout << "\tOpcion --> "; cin >> opc; getchar();
         ejecutar_operacion(opc);
     }while(opc != 0);
     gestor_clientes.guardar_clientes();
@@ -233,7 +233,6 @@ void Supermercado::ejecutar_operacion(int& opc){
         }
         case 3:{
             gestor_stock.listar_productos();
-            getchar();
             break;
         }
         case 4:{
@@ -247,7 +246,6 @@ void Supermercado::ejecutar_operacion(int& opc){
         }
         case 6:{
             gestor_clientes.listar_clientes();
-            getchar();
             break;
         }
         case 7:{
