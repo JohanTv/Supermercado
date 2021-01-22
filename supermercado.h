@@ -26,7 +26,7 @@ public:
         gestor_clientes.cargar_clientes();
         strcpy(gestor_ventas.ruta_archivo,"Ventas.dat\0");
         gestor_ventas.cargar_ventas();
-        strcpy(ruta_archivo,"Datos/Fecha.txt\0");
+        strcpy(ruta_archivo,"Fecha.txt\0");
         cargar_fecha();
     }
     void mostrar_menu();
