@@ -20,11 +20,11 @@ private:
 public:
     Supermercado(char _nombre[]){
         strcpy(nombre, _nombre);
-        strcpy(gestor_stock.ruta_archivo,"Datos/Productos.dat\0");
+        strcpy(gestor_stock.ruta_archivo,"Productos.dat\0");
         gestor_stock.cargar_productos();
-        strcpy(gestor_clientes.ruta_archivo,"Datos/Clientes.dat\0");
+        strcpy(gestor_clientes.ruta_archivo,"Clientes.dat\0");
         gestor_clientes.cargar_clientes();
-        strcpy(gestor_ventas.ruta_archivo,"Datos/Ventas.dat\0");
+        strcpy(gestor_ventas.ruta_archivo,"Ventas.dat\0");
         gestor_ventas.cargar_ventas();
         strcpy(ruta_archivo,"Datos/Fecha.txt\0");
         cargar_fecha();
