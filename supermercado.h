@@ -5,7 +5,7 @@
 #include <fstream>
 using namespace std;
 
-#define CLEAN system("clear")
+#define CLEAN system("cls")
 #include "administrador.cpp"
 
 class Supermercado{
